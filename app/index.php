@@ -63,6 +63,14 @@ function createPoll() {
   $result = doPost($data, 'sendPoll');
   $db->messageId = $result->result->message_id;
 
+
+  $data = array(
+    'message_id' => $db->messageId,
+    'disable_notification' => true
+  );
+  $result = doPost($data, 'pinChatMessage');
+  echoResult($result);
+
   saveDbData($db);
 }
 
