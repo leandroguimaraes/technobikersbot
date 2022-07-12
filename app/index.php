@@ -3,11 +3,34 @@ require_once("config.php");
 
 global $TELEGRAM_CHANNEL_ID, $TELEGRAM_BOT_TOKEN;
 
+date_default_timezone_set('America/Sao_Paulo');
+
+$months = [
+  'JAN',
+  'FEV',
+  'MAR',
+  'ABR',
+  'MAI',
+  'JUN',
+  'JUL',
+  'AGO',
+  'SET',
+  'OUT',
+  'NOV',
+  'DEZ'
+];
+
+$daysToSunday = 7 - date('w');
+$today = date('Y-m-d');
+$sundayTime = strtotime("{$today} + {$daysToSunday} days");
+
+$sunday = date('d/', $sundayTime).$months[date('n', $sundayTime)-1];
+
 $url = "https://api.telegram.org/bot{$TELEGRAM_BOT_TOKEN}/sendPoll";
 
 $data = array(
   "chat_id" => "-{$TELEGRAM_CHANNEL_ID}",
-  "question" => "Você vai ao pedal deste domingo 10/JUL?",
+  "question" => "Você vai ao pedal deste domingo {$sunday}?",
   "options" => ["Bora! 🚴‍♂️", "Neste, não... 👎"],
   "type" => "quiz",
   "correct_option_id" => 0,
