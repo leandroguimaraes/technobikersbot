@@ -1,7 +1,7 @@
 <?php
 require_once("app/config.php");
 
-global $private_dir, $public_dir, $github_repo_name, $github_secret;
+global $private_dir, $github_repo_name, $github_secret;
 
 error_reporting(-1);
 
@@ -19,7 +19,6 @@ try {
 	{
 		chdir($private_dir);
 		shell_exec('git pull');
-		shell_exec('cp -R '.$private_dir.'app '.$public_dir);
 	}
 }
 catch(Exception $e) {
