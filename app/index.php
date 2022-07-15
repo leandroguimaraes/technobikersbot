@@ -17,6 +17,16 @@ if ($isTodayFriday && $isTimeToSend) {
   }
 }
 
+$isTodaySunday = date('w') == 0;
+$isTimeToSend = date('H') == 9;
+if ($isTodaySunday && $isTimeToSend) {
+  $db = getDbData();
+  if (isset($db->lastSent) && ($db->messageId > 0)) {
+    unpinChatMessage($db->messageId);
+    saveDbData();
+  }
+}
+
 function sendPoll() {
   $months = [
     'JAN',
@@ -68,6 +78,14 @@ function pinChatMessage($messageId) {
   return doPost($data, 'pinChatMessage');
 }
 
+function unpinChatMessage($messageId) {
+  $data = array(
+    'message_id' => $messageId
+  );
+
+  return doPost($data, 'unpinChatMessage');
+}
+
 function getDbData() {
   global $dbFile;
 
@@ -79,10 +97,11 @@ function getDbData() {
   }
 }
 
-function saveDbData($data) {
+function saveDbData($data = null) {
   global $dbFile;
 
-  file_put_contents($dbFile, json_encode($data));
+  $data = $data != null ? json_encode($data) : null;
+  file_put_contents($dbFile, $data);
 }
 
 function doPost($data, $endPoint) {
