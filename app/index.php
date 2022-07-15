@@ -13,11 +13,11 @@ $isTimeToSend = date('H') == 9;
 if ($isTodayFriday && $isTimeToSend) {
   $db = getDbData();
   if (!isset($db->lastSent) || date('Y-m-d', strtotime($db->lastSent)) != date('Y-m-d')) {
-    createPoll();
+    sendPoll();
   }
 }
 
-function createPoll() {
+function sendPoll() {
   $months = [
     'JAN',
     'FEV',
@@ -54,14 +54,18 @@ function createPoll() {
   $result = doPost($data, 'sendPoll');
   $db->messageId = $result->result->message_id;
 
-
-  $data = array(
-    'message_id' => $db->messageId,
-    'disable_notification' => true
-  );
-  $result = doPost($data, 'pinChatMessage');
+  pinChatMessage($db->messageId);
 
   saveDbData($db);
+}
+
+function pinChatMessage($messageId) {
+  $data = array(
+    'message_id' => $messageId,
+    'disable_notification' => true
+  );
+
+  return doPost($data, 'pinChatMessage');
 }
 
 function getDbData() {
