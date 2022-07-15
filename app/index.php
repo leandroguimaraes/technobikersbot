@@ -11,19 +11,10 @@ $url = "https://api.telegram.org/bot{$TELEGRAM_BOT_TOKEN}/";
 $isTodayFriday = date('w') == 5;
 $isTimeToSend = date('H') == 9;
 if ($isTodayFriday && $isTimeToSend) {
-  $sendMsg = false;
   $db = getDbData();
   if (!isset($db->lastSent) || date('Y-m-d', strtotime($db->lastSent)) != date('Y-m-d')) {
-    $sendMsg = true;
+    createPoll();
   }
-
-  if ($sendMsg) {
-    sendMsg();
-  }
-}
-
-function sendMsg() {
-  createPoll();
 }
 
 function createPoll() {
