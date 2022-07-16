@@ -7,3 +7,6 @@ $TELEGRAM_BOT_TOKEN = "bot-token";
 $private_dir = '/private/dir/';
 $github_repo_name = '';
 $github_secret = '';
+
+// Miscellaneous
+$wakeup_audio = '';

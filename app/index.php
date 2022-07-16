@@ -3,7 +3,7 @@ date_default_timezone_set('America/Sao_Paulo');
 
 require_once("config.php");
 
-global $TELEGRAM_BOT_TOKEN;
+global $TELEGRAM_BOT_TOKEN, $wakeup_audio;
 
 $dbFile = 'db.php';
 $url = "https://api.telegram.org/bot{$TELEGRAM_BOT_TOKEN}/";
@@ -25,6 +25,17 @@ if ($isTodaySunday && $isTimeToSend) {
     stopPoll($db->messageId);
     unpinChatMessage($db->messageId);
     saveDbData();
+  }
+}
+
+$isTodaySunday = date('w') == 0;
+$isTimeToSend = date('H') == 7;
+if ($isTodaySunday && $isTimeToSend) {
+  $db = getDbData();
+  if (isset($db->lastSent) && !@$db->acorda) {
+    sendVoice($wakeup_audio, '🚴‍♂️🚴‍♂️🚴‍♂️');
+    $db->acorda = true;
+    saveDbData($db);
   }
 }
 
@@ -93,6 +104,15 @@ function stopPoll($messageId) {
   );
 
   return doPost($data, 'stopPoll');
+}
+
+function sendVoice($voice, $caption) {
+  $data = array(
+    'voice' => $voice,
+    'caption' => $caption
+  );
+
+  return doPost($data, 'sendVoice');
 }
 
 function getDbData() {
