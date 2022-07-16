@@ -22,6 +22,7 @@ $isTimeToSend = date('H') == 9;
 if ($isTodaySunday && $isTimeToSend) {
   $db = getDbData();
   if (isset($db->lastSent) && ($db->messageId > 0)) {
+    stopPoll($db->messageId);
     unpinChatMessage($db->messageId);
     saveDbData();
   }
@@ -84,6 +85,14 @@ function unpinChatMessage($messageId) {
   );
 
   return doPost($data, 'unpinChatMessage');
+}
+
+function stopPoll($messageId) {
+  $data = array(
+    'message_id' => $messageId
+  );
+
+  return doPost($data, 'stopPoll');
 }
 
 function getDbData() {
