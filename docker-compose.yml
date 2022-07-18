@@ -2,7 +2,7 @@ version: "3.1"
 
 services:
   php:
-    image: php:apache
+    image: php:7.3-apache
     container_name: technobot
     ports:
       - 80:80
