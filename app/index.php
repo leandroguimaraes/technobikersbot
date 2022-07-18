@@ -18,17 +18,6 @@ if ($isTodayFriday && $isTimeToSend) {
 }
 
 $isTodaySunday = date('w') == 0;
-$isTimeToSend = date('H') == 9;
-if ($isTodaySunday && $isTimeToSend) {
-  $db = getDbData();
-  if (isset($db->lastSent) && ($db->messageId > 0)) {
-    stopPoll($db->messageId);
-    unpinChatMessage($db->messageId);
-    saveDbData();
-  }
-}
-
-$isTodaySunday = date('w') == 0;
 $isTimeToSend = date('H') == 7;
 if ($isTodaySunday && $isTimeToSend) {
   $db = getDbData();
@@ -36,6 +25,17 @@ if ($isTodaySunday && $isTimeToSend) {
     sendVoice($wakeup_audio, '🚴‍♂️🚴‍♂️🚴‍♂️');
     $db->acorda = true;
     saveDbData($db);
+  }
+}
+
+$isTodaySunday = date('w') == 0;
+$isTimeToSend = date('H') == 9;
+if ($isTodaySunday && $isTimeToSend) {
+  $db = getDbData();
+  if (isset($db->lastSent) && ($db->messageId > 0)) {
+    stopPoll($db->messageId);
+    unpinChatMessage($db->messageId);
+    saveDbData();
   }
 }
 
