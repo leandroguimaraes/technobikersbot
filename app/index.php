@@ -17,16 +17,16 @@ if ($isTodayFriday && $isTimeToSend) {
   }
 }
 
-$isTodaySunday = date('w') == 0;
-$isTimeToSend = date('H') == 7;
-if ($isTodaySunday && $isTimeToSend) {
-  $db = getDbData();
-  if (isset($db->lastSent) && !@$db->acorda) {
-    sendVoice($wakeup_audio, '🚴‍♂️🚴‍♂️🚴‍♂️');
-    $db->acorda = true;
-    saveDbData($db);
-  }
-}
+// $isTodaySunday = date('w') == 0;
+// $isTimeToSend = date('H') == 7;
+// if ($isTodaySunday && $isTimeToSend) {
+//   $db = getDbData();
+//   if (isset($db->lastSent) && !@$db->acorda) {
+//     sendVoice($wakeup_audio, '🚴‍♂️🚴‍♂️🚴‍♂️');
+//     $db->acorda = true;
+//     saveDbData($db);
+//   }
+// }
 
 $isTodaySunday = date('w') == 0;
 $isTimeToSend = date('H') == 9;
